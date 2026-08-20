@@ -1,24 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
-  <g>
-    <rect width="800" height="600" fill="#8ecb5d"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <rect width="1600" height="1200" fill="#8ecb5d"/>
 
-    <g opacity="0.9" fill="#7cb04d" stroke="#5d8d3d" stroke-width="1.5">
-      <path d="M0 100 Q80 60 160 100 T320 100 T480 100 T640 100 T800 100"/>
-      <path d="M0 200 Q90 160 180 200 T360 200 T540 200 T720 200 T800 200"/>
-      <path d="M0 300 Q110 260 220 300 T440 300 T660 300 T800 300"/>
-      <path d="M0 400 Q150 360 300 400 T600 400 T800 400"/>
-      <path d="M0 500 Q170 460 340 500 T800 500"/>
-    </g>
+  <g opacity="0.55" fill="none" stroke="#6da348" stroke-width="3">
+    <path d="M0 120 Q160 70 320 120 T640 120 T960 120 T1280 120 T1600 120"/>
+    <path d="M0 300 Q180 245 360 300 T720 300 T1080 300 T1440 300 T1600 280"/>
+    <path d="M0 480 Q150 420 300 480 T600 480 T900 480 T1200 480 T1600 450"/>
+    <path d="M0 680 Q180 620 360 680 T720 680 T1080 680 T1440 680 T1600 650"/>
+    <path d="M0 880 Q160 820 320 880 T640 880 T960 880 T1280 880 T1600 850"/>
+    <path d="M0 1080 Q180 1020 360 1080 T720 1080 T1080 1080 T1440 1080 T1600 1060"/>
+  </g>
 
-    <rect x="180" y="150" width="440" height="280" rx="26" fill="#4d7537" opacity="0.9"/>
-    <rect x="180" y="150" width="440" height="280" rx="26" fill="none" stroke="#2e4727" stroke-width="5"/>
+  <path d="M0 210 C280 170 390 260 600 210 S1030 150 1600 230" fill="none" stroke="#c89d5b" stroke-width="70" opacity="0.8"/>
+  <path d="M210 120 C280 350 220 500 360 690 S540 990 490 1200" fill="none" stroke="#c89d5b" stroke-width="62" opacity="0.75"/>
+  <path d="M980 0 C920 220 1040 360 970 560 S840 900 930 1200" fill="none" stroke="#c89d5b" stroke-width="58" opacity="0.72"/>
 
-    <g opacity="0.5" fill="none" stroke="#2e4727" stroke-width="3">
-      <path d="M220 180 Q300 150 380 190 T560 210"/>
-      <path d="M215 270 Q300 240 390 280 T560 300"/>
-    </g>
+  <rect x="400" y="300" width="800" height="600" rx="48" fill="#4d7537" opacity="0.95"/>
+  <rect x="400" y="300" width="800" height="600" rx="48" fill="none" stroke="#2e4727" stroke-width="10"/>
+  <g fill="none" stroke="#2e4727" stroke-width="6" opacity="0.6">
+    <path d="M470 390 Q650 330 820 410 T1130 420"/>
+    <path d="M450 570 Q620 500 800 590 T1140 600"/>
+    <path d="M470 760 Q650 690 820 770 T1130 790"/>
+  </g>
 
-    <circle cx="235" cy="185" r="35" fill="#bfe98f" opacity="0.5"/>
-    <circle cx="560" cy="350" r="45" fill="#bfe98f" opacity="0.5"/>
+  <g fill="#395b2d" stroke="#263f21" stroke-width="6">
+    <rect x="520" y="410" width="180" height="110" rx="12"/>
+    <rect x="880" y="390" width="220" height="130" rx="12"/>
+    <rect x="570" y="670" width="240" height="120" rx="12"/>
+    <rect x="930" y="670" width="150" height="140" rx="12"/>
+  </g>
+  <g fill="#bfe98f" opacity="0.45">
+    <circle cx="460" cy="350" r="55"/>
+    <circle cx="1140" cy="850" r="70"/>
+    <circle cx="250" cy="1010" r="85"/>
+    <circle cx="1390" cy="300" r="75"/>
   </g>
 </svg>
