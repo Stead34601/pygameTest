@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+<svg xmlns="http://www.w3.org/2000/svg" width="3200" height="2400" viewBox="0 0 3200 2400">
+  <g transform="scale(2)">
   <rect width="1600" height="1200" fill="#8ecb5d"/>
 
   <g opacity="0.55" fill="none" stroke="#6da348" stroke-width="3">
@@ -33,5 +34,6 @@
     <circle cx="1140" cy="850" r="70"/>
     <circle cx="250" cy="1010" r="85"/>
     <circle cx="1390" cy="300" r="75"/>
+  </g>
   </g>
 </svg>
