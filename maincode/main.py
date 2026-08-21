@@ -27,18 +27,16 @@ class player:
         message = ("The player has "+ str(self.health)+ "health, and is at "+ str(self.pos))
         return message
 
-    def move(self,cam,direction):
+    def move(self,world,direction):
         if direction == "up":
-            self.rect.centery -= self.speed
+            world.y += self.speed
         elif direction == "down":
-            self.rect.centery += self.speed
+            world.y -= self.speed
         elif direction == "left":
-            self.rect.centerx -= self.speed
+            world.x += self.speed
         elif direction == "right":
-            self.rect.centerx += self.speed
-        cam.x = self.rect.centerx - (cam.width / 2)
-        cam.y = self.rect.centery - (cam.height / 2)
-        cam.updatePos()
+            world.x -= self.speed
+        world.updatePos()
         self.updatePos()
 
     def faceMouse(self):
@@ -66,6 +64,21 @@ class Camera:
     def updatePos(self):
         self.pos = (self.x, self.y)
 
+class World:
+    def __init__(self,player,cam):
+        self.player = player
+        self.cam = cam
+        self.enemies = []
+        self.bullets = []
+        self.pos = (0,0)
+        self.y = 0
+        self.x = 0
+
+    def updatePos(self):
+        self.pos = (self.x,self.y)
+    
+
+
 #functions
 def getMouseBearing(pos):
     mousePos = pygame.mouse.get_pos()
@@ -87,8 +100,8 @@ def doInputs(cam):
 
 
 #create a character with a camera
-character = player((50,50))
-camera = Camera(40,30, character)
+character = player((400,300))
+camera = Camera(400,300, character)
 
 
 
