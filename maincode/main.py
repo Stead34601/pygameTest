@@ -60,8 +60,6 @@ class Camera:
         self.height = height
         self.x = player.rect.centerx - (width / 2)
         self.y = player.rect.centery - (height / 2)
-        self.surf = pygame.Surface((width,height))
-        self.rect = self.surf.get_rect(center = (self.x,self.y))
         self.pos = (self.x, self.y)
 
     def __str__(self):
@@ -88,14 +86,12 @@ class World:
         self.pos = (self.x,self.y)
 
     def move(self,x,y):
-        self.lockAtEdges(3200,2400)
+        self.lockAtEdges(2400,1800)
         #remember to world.updatePos()
         self.x += x
         self.y += y
 
         #cam
-        self.cam.rect.centerx += x
-        self.cam.rect.centery += y
         self.cam.x += x
         self.cam.y += y
         self.cam.updatePos()
@@ -108,25 +104,26 @@ class World:
         self.updatePos()
 
     def lockAtEdges(self, width, height):
-        if self.cam.rect.bottom > height:
-            self.cam.rect.bottom = height
+        print(str(width) + "wdith")
+        print (str(-height))
+        if self.cam.y < (-height):
+            self.cam.y = (-height)
             print("Height Locked max")
-        elif self.cam.rect.top < 0:
-            self.cam.rect.top = 0
-            print("Height lcoked Min")
-
-        print(self.cam.rect.left)
-        print("sum" + str(0 - self.cam.width / 2))
+        elif self.cam.y > 0:
+            self.cam.y = 0
+            print("Height Locked Min")
 
         print(self.cam.pos)
 
 
-        if self.cam.rect.lefts < (0 - self.cam.width / 2):
-            self.cam.rect.left = (0 - self.cam.width / 2)
+        if self.cam.x > 0:
+            self.cam.x = 0
             print("Width Locked max")
-        elif self.cam.rect.right > width:
-            self.cam.pos[0] = width
+        elif self.cam.x < -width:
+            self.cam.x = -width
             print("Width Locked min")
+
+        self.cam.updatePos()
         
 
 
