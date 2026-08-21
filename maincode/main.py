@@ -8,6 +8,7 @@ pygame.init()
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("TestGame")
 background = pygame.image.load("maincode/background.svg").convert()
+backgroundRect = background.get_rect(topleft = (0,0))
 
 clock = pygame.time.Clock()
 
@@ -45,7 +46,6 @@ class player:
         self.rotated = pygame.transform.rotate(self.surf, bearing)
         self.rect = self.rotated.get_rect(center=self.rect.center)
         self.mouseBearing = bearing % 360
-        print("Player Mouse: " + str(self.mouseBearing))
 
     def updatePos(self):
         self.pos = (self.rect.centerx,self.rect.centery)
@@ -60,6 +60,8 @@ class Camera:
         self.height = height
         self.x = player.rect.centerx - (width / 2)
         self.y = player.rect.centery - (height / 2)
+        self.surf = pygame.Surface((width,height))
+        self.rect = self.surf.get_rect(center = (self.x,self.y))
         self.pos = (self.x, self.y)
 
     def __str__(self):
@@ -76,22 +78,57 @@ class World:
         self.enemies = []
         self.bullets = []
         self.pos = (0,0)
-        self.y = 0
-        self.x = 0
+        self.y = self.cam.x
+        self.x = self.cam.y
+        self.updatePos
+        self.background = backgroundRect
 
     def updatePos(self):
-        print('worldUpdated' + str(self.x) + str(self.y))
+        print('worldUpdated: ' + str(self.x) + " " + str(self.y))
         self.pos = (self.x,self.y)
 
     def move(self,x,y):
+        self.lockAtEdges(3200,2400)
         #remember to world.updatePos()
         self.x += x
         self.y += y
+
+        #cam
+        self.cam.rect.centerx += x
+        self.cam.rect.centery += y
+        self.cam.x += x
+        self.cam.y += y
+        self.cam.updatePos()
+
+        #bullets
         for bullet in self.bullets:
             bullet.rect.centerx += x
             bullet.rect.centery += y
 
         self.updatePos()
+
+    def lockAtEdges(self, width, height):
+        if self.cam.rect.bottom > height:
+            self.cam.rect.bottom = height
+            print("Height Locked max")
+        elif self.cam.rect.top < 0:
+            self.cam.rect.top = 0
+            print("Height lcoked Min")
+
+        print(self.cam.rect.left)
+        print("sum" + str(0 - self.cam.width / 2))
+
+        print(self.cam.pos)
+
+
+        if self.cam.rect.lefts < (0 - self.cam.width / 2):
+            self.cam.rect.left = (0 - self.cam.width / 2)
+            print("Width Locked max")
+        elif self.cam.rect.right > width:
+            self.cam.pos[0] = width
+            print("Width Locked min")
+        
+
 
 
     
@@ -167,13 +204,11 @@ while True:
 
 
     #blit background
-    screen.blit(background, (world.pos))
+    screen.blit(background, (world.cam.pos))
     #blit everything
     for bullet in world.bullets:
         bullet.move()
         screen.blit(bullet.surf,bullet.rect)
-        print("Blitted")
-        print (str(bullet))
     screen.blit(character.rotated, character.rect)
 
 
