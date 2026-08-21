@@ -10,8 +10,6 @@ pygame.display.set_caption("TestGame")
 background = pygame.image.load("maincode/background.svg").convert()
 
 clock = pygame.time.Clock()
-cameray = 0
-camerax = 0
 
 
 #create a character class
@@ -28,15 +26,17 @@ class player:
         return message
 
     def move(self,world,direction):
+        y = 0
+        x = 0
         if direction == "up":
-            world.y += self.speed
+            y += self.speed
         elif direction == "down":
-            world.y -= self.speed
+            y -= self.speed
         elif direction == "left":
-            world.x += self.speed
+            x += self.speed
         elif direction == "right":
-            world.x -= self.speed
-        world.updatePos()
+            x -= self.speed
+        world.move(x,y)
         self.updatePos()
 
     def faceMouse(self):
@@ -44,9 +44,14 @@ class player:
         bearing = getMouseBearing(pos)
         self.rotated = pygame.transform.rotate(self.surf, bearing)
         self.rect = self.rotated.get_rect(center=self.rect.center)
+        self.mouseBearing = bearing % 360
+        print("Player Mouse: " + str(self.mouseBearing))
 
     def updatePos(self):
         self.pos = (self.rect.centerx,self.rect.centery)
+
+    def spawnBullet(self):
+        Bullet(world,self.pos,self.mouseBearing,100)
 
 #create a camera class
 class Camera:
@@ -75,8 +80,41 @@ class World:
         self.x = 0
 
     def updatePos(self):
+        print('worldUpdated' + str(self.x) + str(self.y))
         self.pos = (self.x,self.y)
+
+    def move(self,x,y):
+        #remember to world.updatePos()
+        self.x += x
+        self.y += y
+        for bullet in self.bullets:
+            bullet.rect.centerx += x
+            bullet.rect.centery += y
+
+        self.updatePos()
+
+
     
+class Bullet:
+    def __init__(self,world,pos,bearing,damage):
+        self.pos = pos
+        self.bearing = bearing + 90
+        self.damage = damage
+        self.speed = 0.2
+        self.surf = pygame.Surface((2,2))
+        self.surf.fill('Yellow')
+        self.rect = self.surf.get_rect(center=pos)
+
+        #add it to the bullets
+        world.bullets.append(self)
+
+    def move(self):
+        self.rect.centerx += self.speed * math.degrees(math.cos(math.radians(self.bearing)))
+        self.rect.centery -= self.speed * math.degrees(math.sin(math.radians(self.bearing)))
+
+    def __str__(self):
+        message = "Bullet: \n Position: " + str(self.pos) + "\nBearing: " + str(self.bearing)
+        return message
 
 
 #functions
@@ -86,22 +124,25 @@ def getMouseBearing(pos):
     dy = mousePos[1] - pos[1]
     return math.degrees(math.atan2(-dy, dx)) - 90
 
-def doInputs(cam):
+def doInputs(world):
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_w]:
-        character.move(cam,"up")
+        character.move(world,"up")
     if keys[pygame.K_s]:
-        character.move(cam,"down")
+        character.move(world,"down")
     if keys[pygame.K_a]:
-        character.move(cam,"left")
+        character.move(world,"left")
     if keys[pygame.K_d]:
-        character.move(cam,"right")
+        character.move(world,"right")
+    if keys[pygame.K_v]:
+        world.player.spawnBullet()
 
 
 #create a character with a camera
 character = player((400,300))
 camera = Camera(400,300, character)
+world = World(character,camera)
 
 
 
@@ -118,15 +159,21 @@ while True:
     #Player stuff
 
     #keys
-    doInputs(camera)
+    doInputs(world)
     character.faceMouse()
-    print(str(camera))
-    print(str(character))
+
+    #tick
 
 
+
+    #blit background
+    screen.blit(background, (world.pos))
     #blit everything
-    #screen.blit(background,(0,0))
-    screen.blit(background, (camera.pos))
+    for bullet in world.bullets:
+        bullet.move()
+        screen.blit(bullet.surf,bullet.rect)
+        print("Blitted")
+        print (str(bullet))
     screen.blit(character.rotated, character.rect)
 
 
