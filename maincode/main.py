@@ -2,6 +2,7 @@ import pygame
 import time
 import math
 from sys import exit
+import random
 
 #initial variables
 pygame.init()
@@ -96,35 +97,66 @@ class World:
         self.cam.y += y
         self.cam.updatePos()
 
-        #bullets
-        for bullet in self.bullets:
-            bullet.rect.centerx += x
-            bullet.rect.centery += y
+        
+        if not(self.lockAtEdges(2400,1800)):
+            #bullets
+            for bullet in self.bullets:
+                bullet.rect.centerx += x
+                bullet.rect.centery += y
+
+            #enemies
+            for enemy in self.enemies:
+                enemy.rect.centerx += x
+                enemy.rect.centery += y
+                enemy.updatePos()
+
 
         self.updatePos()
 
     def lockAtEdges(self, width, height):
+        locked = False
         print(str(width) + "wdith")
         print (str(-height))
         if self.cam.y < (-height):
             self.cam.y = (-height)
             print("Height Locked max")
+            locked = True
         elif self.cam.y > 0:
             self.cam.y = 0
             print("Height Locked Min")
+            locked = True
+
+
+        
 
         print(self.cam.pos)
 
 
         if self.cam.x > 0:
             self.cam.x = 0
+            locked = True
             print("Width Locked max")
         elif self.cam.x < -width:
             self.cam.x = -width
+            locked = True
             print("Width Locked min")
-
         self.cam.updatePos()
+        return locked
+
         
+class Enemy:
+    def __init__(self,pos, world):
+        self.pos = pos
+        self.x = pos[0]
+        self.y = pos[0]
+        self.surf = pygame.image.load("maincode/enemy.svg").convert_alpha()
+        self.rect = self.surf.get_rect(center = pos)
+
+        world.enemies.append(self)
+
+    def updatePos(self):
+        self.pos = self.x + self.y
+
 
 
 
@@ -178,6 +210,13 @@ character = player((400,300))
 camera = Camera(400,300, character)
 world = World(character,camera)
 
+for i in range(5):
+    x = random.randint(0,2400)
+    y = random.randint(0,1800)
+    x = x
+    y = y
+    Enemy((x,y), world)
+
 
 
 #main game loop
@@ -206,6 +245,9 @@ while True:
     for bullet in world.bullets:
         bullet.move()
         screen.blit(bullet.surf,bullet.rect)
+
+    for enemy in world.enemies:
+        screen.blit(enemy.surf, enemy.rect)
     screen.blit(character.rotated, character.rect)
 
 
