@@ -148,7 +148,7 @@ class Enemy:
     def __init__(self,pos, world):
         self.pos = pos
         self.x = pos[0]
-        self.y = pos[0]
+        self.y = pos[1]
         self.surf = pygame.image.load("maincode/enemy.svg").convert_alpha()
         self.rect = self.surf.get_rect(center = pos)
 
@@ -230,6 +230,15 @@ while True:
     #cam stuff
 
     #Player stuff
+
+    #check for bullet contacts
+    for enemy in world.enemies:
+        for bullet in world.bullets:
+            if enemy.rect.colliderect(bullet.rect):
+                world.enemies.remove(enemy)
+                print("Yay you killed them")
+                world.bullets.remove(bullet)
+
 
     #keys
     doInputs(world)
