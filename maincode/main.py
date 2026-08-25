@@ -22,6 +22,7 @@ class player:
         self.health = 100
         self.surf = pygame.image.load("maincode/trooper.svg").convert_alpha()
         self.rect = self.surf.get_rect(center = pos)
+        self.timeSinceLastBullet = 0
 
     def __str__(self):
         message = ("The player has "+ str(self.health)+ "health, and is at "+ str(self.pos))
@@ -52,7 +53,12 @@ class player:
         self.pos = (self.rect.centerx,self.rect.centery)
 
     def spawnBullet(self):
-        Bullet(world,self.pos,self.mouseBearing,100)
+        if (self.timeSinceLastBullet + 1) < time.time():
+            Bullet(world,self.pos,self.mouseBearing,100)
+            self.timeSinceLastBullet = time.time()
+        else:
+            print("shot too soon")
+
 
 #create a camera class
 class Camera:
